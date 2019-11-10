@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace GamesSearchAsp.Services
 {
-    interface IGameSearchService
+    public interface IGameSearchService
     {
         public Task<GameListApiResponse> SearchByTitleAsync(string title);
+        public Task<GameDetailsApiResponse> SearchByIdAsync(int id);
     }
 }

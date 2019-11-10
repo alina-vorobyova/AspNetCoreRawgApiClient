@@ -72,18 +72,28 @@ namespace GamesSearchAsp.Models
 
     public class Platform
     {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string slug { get; set; }
         public Platform1 platform { get; set; }
     }
+
+
 
     public class Platform1
     {
         public int id { get; set; }
         public string name { get; set; }
         public string slug { get; set; }
+        public Platform2 platform { get; set; }
+        public string released_at { get; set; }
+        public Requirements requirements { get; set; }
     }
 
     public class Store
     {
+        public int id { get; set; }
+        public string url { get; set; }
         public Store1 store { get; set; }
     }
 
@@ -92,7 +102,11 @@ namespace GamesSearchAsp.Models
         public int id { get; set; }
         public string name { get; set; }
         public string slug { get; set; }
+        public string domain { get; set; }
+        public int games_count { get; set; }
+        public string image_background { get; set; }
     }
+
 
     public class Rating
     {
@@ -107,17 +121,25 @@ namespace GamesSearchAsp.Models
         public int id { get; set; }
         public string image { get; set; }
     }
+   
 
     public class Parent_Platforms
     {
         public Platform2 platform { get; set; }
     }
 
+
+
     public class Platform2
     {
         public int id { get; set; }
         public string name { get; set; }
         public string slug { get; set; }
+        public object image { get; set; }
+        public object year_end { get; set; }
+        public object year_start { get; set; }
+        public int games_count { get; set; }
+        public string image_background { get; set; }
     }
 
     public class Genre
@@ -125,6 +147,7 @@ namespace GamesSearchAsp.Models
         public int id { get; set; }
         public string name { get; set; }
         public string slug { get; set; }
+        public int games_count { get; set; }
+        public string image_background { get; set; }
     }
-
 }

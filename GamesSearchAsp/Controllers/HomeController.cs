@@ -6,24 +6,33 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GamesSearchAsp.Models;
+using GamesSearchAsp.Services;
 
 namespace GamesSearchAsp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IGameSearchService gamesSearchService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IGameSearchService gamesSearchService)
         {
-            _logger = logger;
+            this.gamesSearchService = gamesSearchService;
         }
 
 
-        public IActionResult Search(string title)
+        public async Task<IActionResult> Search(string title)
         {
-           
-            return View();
+            var result = await gamesSearchService.SearchByTitleAsync(title);
+            return View(result);
         }
+
+        public async Task<IActionResult> GameDetails(int id)
+        {
+            var result = await gamesSearchService.SearchByIdAsync(id);
+            ViewBag.Result = result;
+            return View(result);
+        }
+
 
         public IActionResult Index()
         {
