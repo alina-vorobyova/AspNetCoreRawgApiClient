@@ -29,7 +29,9 @@ namespace GamesSearchAsp.Controllers
         public async Task<IActionResult> GameDetails(int id)
         {
             var result = await gamesSearchService.SearchByIdAsync(id);
-            ViewBag.Result = result;
+            var similarGames = await gamesSearchService.SearchSimilarGamesAsync(id);
+            
+            ViewBag.SimilarGames = similarGames.results;
             return View(result);
         }
 

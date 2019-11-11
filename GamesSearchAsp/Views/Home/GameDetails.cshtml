@@ -6,20 +6,32 @@
 
 
 
-    <div class="card mb-3 cardGameDetails">
-        @if (Model.clip != null)
-        {
-            <video controls>
-                <source src="@Model.clip.clip" type="video/mp4">
-            </video>
-        }
-        else
-        {
-            <img  src="~/images/video-placeholder.jpg" />
-        }
+<div class="card mb-3 cardGameDetails">
+    @if (Model.clip != null)
+    {
+        <video controls>
+            <source src="@Model.clip.clip" type="video/mp4">
+        </video>
+    }
+    else
+    {
+        <img src="~/images/video-placeholder.jpg" />
+    }
 
+    <div class="card-body">
+        <h5 class="card-title">@Model.name_original</h5>
+        <p class="card-text">@Html.Raw(Model.description)</p>
+    </div>
+</div>
+
+@foreach (var item in ViewBag.SimilarGames)
+{
+    <div class="card col-md-4">
+        <img src="@item.background_image" class="card-img-top" alt="..." onerror="event.target.src = '/images/placeholder.jpg'">
         <div class="card-body">
-            <h5 class="card-title">@Model.name_original</h5>
-            <p class="card-text">@Html.Raw(Model.description)</p>
+            <h5 class="card-title">@item.name</h5>
+            <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@item.id" class="btn btn-primary">Details</a>
         </div>
     </div>
+
+}

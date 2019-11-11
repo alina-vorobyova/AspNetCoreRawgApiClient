@@ -56,5 +56,14 @@ namespace GamesSearchAsp.Services
             }
             return result;
         }
+
+        public async Task<SimilarGamesApiResponse> SearchSimilarGamesAsync(int id)
+        {
+            var response = await httpClient.GetAsync($"{url}/games/{id}/suggested");
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<SimilarGamesApiResponse>(json);
+
+            return result;
+        }
     }
 }
