@@ -12,5 +12,9 @@ namespace GamesSearchAsp.Services
         public Task<GameDetailsApiResponse> SearchByIdAsync(int id);
 
         public Task<SimilarGamesApiResponse> SearchSimilarGamesAsync(int id);
+
+        public Task<StoresListApiResponse> SearchStoresListAsync(int id);
+
+        public Task<StoreInfo> SearchStoreByIdAsync(int id);
     }
 }

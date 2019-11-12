@@ -30,8 +30,11 @@ namespace GamesSearchAsp.Controllers
         {
             var result = await gamesSearchService.SearchByIdAsync(id);
             var similarGames = await gamesSearchService.SearchSimilarGamesAsync(id);
-            
+            var storesList = await gamesSearchService.SearchStoresListAsync(id);
+            //var allStoresList = await gamesSearchService.SearchAllStoresListAsync();
             ViewBag.SimilarGames = similarGames.results;
+            ViewBag.Stores = storesList.results;
+            //ViewBag.AllStoresList = allStoresList.results;
             return View(result);
         }
 

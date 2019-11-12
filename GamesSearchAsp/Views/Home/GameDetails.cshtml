@@ -24,14 +24,30 @@
     </div>
 </div>
 
-@foreach (var item in ViewBag.SimilarGames)
-{
-    <div class="card col-md-4">
-        <img src="@item.background_image" class="card-img-top" alt="..." onerror="event.target.src = '/images/placeholder.jpg'">
-        <div class="card-body">
-            <h5 class="card-title">@item.name</h5>
-            <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@item.id" class="btn btn-primary">Details</a>
-        </div>
-    </div>
 
+<div class="row">
+    @foreach (var item in ViewBag.SimilarGames)
+    {
+        <div class="card col-md-4">
+            <img src="@item.background_image" class="card-img-top" alt="..." onerror="event.target.src = '/images/placeholder.jpg'">
+            <div class="card-body">
+                <h5 class="card-title">@item.name</h5>
+                <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@item.id" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+
+@foreach (var item in ViewBag.Stores)
+{
+    <a href="@item.url" store="@item"></a>
 }
+
+
+@*@foreach (var item in ViewBag.AllStoresList)
+{
+    <p>@item.name</p>
+}*@

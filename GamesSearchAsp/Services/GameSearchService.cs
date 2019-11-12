@@ -59,11 +59,52 @@ namespace GamesSearchAsp.Services
 
         public async Task<SimilarGamesApiResponse> SearchSimilarGamesAsync(int id)
         {
-            var response = await httpClient.GetAsync($"{url}/games/{id}/suggested");
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<SimilarGamesApiResponse>(json);
+            SimilarGamesApiResponse result;
+            if (!memoryCache.TryGetValue(id, out result))
+            {
+                var response = await httpClient.GetAsync($"{url}/games/{id}/suggested");
+                var json = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<SimilarGamesApiResponse>(json);
 
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    throw new Exception("Not found");
+                memoryCache.Set(id, result);
+            }
             return result;
         }
+
+        public async Task<StoresListApiResponse> SearchStoresListAsync(int id)
+        {
+            StoresListApiResponse result;
+            if (!memoryCache.TryGetValue(id, out result))
+            {
+                var response = await httpClient.GetAsync($"{url}/games/{id}/stores");
+                var json = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<StoresListApiResponse>(json);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    throw new Exception("Not found");
+                memoryCache.Set(id, result);
+            }
+            return result;
+        }
+
+        public async Task<StoreInfo> SearchStoreByIdAsync(int id)
+        {
+            StoreInfo result;
+            if (!memoryCache.TryGetValue("GameSearchAspStoresKey", out result))
+            {
+                var response = await httpClient.GetAsync($"{url}/stores/{id}");
+                var json = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<StoreInfo>(json);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    throw new Exception("Not found");
+                memoryCache.Set("GameSearchAspStoresKey", result);
+            }
+            return result;
+        }
+
+       
     }
 }
