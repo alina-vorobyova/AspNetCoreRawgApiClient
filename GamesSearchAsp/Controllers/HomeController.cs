@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GamesSearchAsp.Models;
 using GamesSearchAsp.Services;
+using GamesSearchAsp.ViewModels;
 
 namespace GamesSearchAsp.Controllers
 {
@@ -20,10 +21,17 @@ namespace GamesSearchAsp.Controllers
         }
 
 
-        public async Task<IActionResult> Search(string title)
+        public async Task<IActionResult> Search(string title, int page = 1)
         {
-            var result = await gamesSearchService.SearchByTitleAsync(title);
-            return View(result);
+            var result = await gamesSearchService.SearchByTitleAsync(title, page);
+            var model = new GamesResultViewModel
+            {
+                Games = result,
+                TotalPages = (int)Math.Ceiling(result.count / 20.0),
+                CurrentPage = page,
+                Title = title
+            };
+            return View(model);
         }
 
         public async Task<IActionResult> GameDetails(int id)
@@ -31,11 +39,18 @@ namespace GamesSearchAsp.Controllers
             var result = await gamesSearchService.SearchByIdAsync(id);
             var similarGames = await gamesSearchService.SearchSimilarGamesAsync(id);
             var storesList = await gamesSearchService.SearchStoresListAsync(id);
+
+            var model = new GameDetailsViewModel
+            {
+                Game = result,
+                SimilarGames = similarGames.results,
+                StoresList = storesList.results
+            };
             //var allStoresList = await gamesSearchService.SearchAllStoresListAsync();
-            ViewBag.SimilarGames = similarGames.results;
-            ViewBag.Stores = storesList.results;
+            //ViewBag.SimilarGames = similarGames.results;
+            //ViewBag.Stores = storesList.results;
             //ViewBag.AllStoresList = allStoresList.results;
-            return View(result);
+            return View(model);
         }
 
 

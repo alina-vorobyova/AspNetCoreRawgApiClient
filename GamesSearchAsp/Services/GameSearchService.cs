@@ -26,17 +26,17 @@ namespace GamesSearchAsp.Services
             this.memoryCache = memoryCache;
         }
 
-        public async Task<GameListApiResponse> SearchByTitleAsync(string title)
+        public async Task<GameListApiResponse> SearchByTitleAsync(string title, int page = 1)
         {
             title = title.ToLower();
             GameListApiResponse result;
-            if (!memoryCache.TryGetValue(title, out result))
+            if (!memoryCache.TryGetValue($"{title}_page{page}", out result))
             {
-                var response = await httpClient.GetAsync($"{url}/games?search={title}");
+                var response = await httpClient.GetAsync($"{url}/games?search={title}&page={page}");
                 var json = await response.Content.ReadAsStringAsync();
                 result = JsonConvert.DeserializeObject<GameListApiResponse>(json);
 
-                memoryCache.Set(title, result);
+                memoryCache.Set($"{title}_page{page}", result);
             }
             return result;
         }
@@ -92,7 +92,7 @@ namespace GamesSearchAsp.Services
         public async Task<StoreInfo> SearchStoreByIdAsync(int id)
         {
             StoreInfo result;
-            if (!memoryCache.TryGetValue("GameSearchAspStoresKey", out result))
+            if (!memoryCache.TryGetValue($"GameSearchAspStoresKey_{id}", out result))
             {
                 var response = await httpClient.GetAsync($"{url}/stores/{id}");
                 var json = await response.Content.ReadAsStringAsync();
@@ -100,7 +100,7 @@ namespace GamesSearchAsp.Services
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     throw new Exception("Not found");
-                memoryCache.Set("GameSearchAspStoresKey", result);
+                memoryCache.Set($"GameSearchAspStoresKey_{id}", result);
             }
             return result;
         }

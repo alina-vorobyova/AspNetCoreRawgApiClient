@@ -1,4 +1,4 @@
-﻿@model GameDetailsApiResponse
+﻿@model GameDetailsViewModel
 
 @{
     ViewData["Title"] = "GameDetails";
@@ -7,10 +7,10 @@
 
 
 <div class="card mb-3 cardGameDetails">
-    @if (Model.clip != null)
+    @if (Model.Game.clip != null)
     {
         <video controls>
-            <source src="@Model.clip.clip" type="video/mp4">
+            <source src="@Model.Game.clip.clip" type="video/mp4">
         </video>
     }
     else
@@ -19,14 +19,21 @@
     }
 
     <div class="card-body">
-        <h5 class="card-title">@Model.name_original</h5>
-        <p class="card-text">@Html.Raw(Model.description)</p>
+        <h5 class="card-title">@Model.Game.name_original</h5>
+        <p class="card-text">@Html.Raw(Model.Game.description)</p>
+        <p><b>Also you can buy this game in following stores:</b></p>
+        <div>
+            @foreach (var item in Model.StoresList)
+            {
+                <a href="@item.url" store="@item"></a>
+            }
+        </div>
     </div>
 </div>
 
 
 <div class="row">
-    @foreach (var item in ViewBag.SimilarGames)
+    @foreach (var item in Model.SimilarGames)
     {
         <div class="card col-md-4">
             <img src="@item.background_image" class="card-img-top" alt="..." onerror="event.target.src = '/images/placeholder.jpg'">
@@ -40,11 +47,6 @@
 
 </div>
 
-
-@foreach (var item in ViewBag.Stores)
-{
-    <a href="@item.url" store="@item"></a>
-}
 
 
 @*@foreach (var item in ViewBag.AllStoresList)

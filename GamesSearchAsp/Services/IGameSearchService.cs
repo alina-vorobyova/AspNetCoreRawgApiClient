@@ -8,7 +8,7 @@ namespace GamesSearchAsp.Services
 {
     public interface IGameSearchService
     {
-        public Task<GameListApiResponse> SearchByTitleAsync(string title);
+        public Task<GameListApiResponse> SearchByTitleAsync(string title, int page = 1);
         public Task<GameDetailsApiResponse> SearchByIdAsync(int id);
 
         public Task<SimilarGamesApiResponse> SearchSimilarGamesAsync(int id);
