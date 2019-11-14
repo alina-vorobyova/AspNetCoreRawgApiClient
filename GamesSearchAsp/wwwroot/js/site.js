@@ -1,4 +1,24 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿let page;
+let totalPages;
+let url;
 
-// Write your JavaScript code.
+function initPagination(p, t, u) {
+    page = p;
+    totalPages = t;
+    url = u;
+}
+
+$(window).scroll(async function () {
+   
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        page++;
+
+        if (page > totalPages)
+            return;
+
+        let response = await fetch(`${url}&page=${page}`);
+        let html = await response.text();
+        //console.log(html);
+        $('#gameResults').append(html);
+    }
+});

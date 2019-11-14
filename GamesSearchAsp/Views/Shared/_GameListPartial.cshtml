@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Game>
+
+
+@foreach (var item in Model)
+{
+    <partial name="_GameCardPartial" model="item" />
+}

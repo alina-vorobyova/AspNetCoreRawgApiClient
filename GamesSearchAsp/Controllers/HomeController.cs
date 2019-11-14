@@ -34,6 +34,12 @@ namespace GamesSearchAsp.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> SearchResult(string title, int page = 1)
+        {
+            var result = await gamesSearchService.SearchByTitleAsync(title, page);
+            return PartialView("_GameListPartial", result.results);
+        }
+
         public async Task<IActionResult> GameDetails(int id)
         {
             var result = await gamesSearchService.SearchByIdAsync(id);
