@@ -24,12 +24,13 @@ namespace GamesSearchAsp.Controllers
         public async Task<IActionResult> Search(string title, int page = 1)
         {
             var result = await gamesSearchService.SearchByTitleAsync(title, page);
-            var model = new GamesResultViewModel
+            var model = new SearchViewModel
             {
-                Games = result,
-                TotalPages = (int)Math.Ceiling(result.count / 20.0),
-                CurrentPage = page,
-                Title = title
+                Games = result.results,
+                Title = title,
+                TotalResults = result.count,
+                TotalPages = (int)Math.Ceiling(result.count / 10.0),
+                CurrentPage = page
             };
             return View(model);
         }

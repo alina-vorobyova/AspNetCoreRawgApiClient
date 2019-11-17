@@ -1,7 +1,22 @@
 ﻿@model IEnumerable<Game>
 
-
-@foreach (var item in Model)
+@if (Model != null)
 {
-    <partial name="_GameCardPartial" model="item" />
+    @foreach (var item in Model)
+    {
+        <partial name="_GameCardPartial" model="item" />
+    }
+
 }
+else
+{
+    <p>Not found</p>
+}
+
+<div class="card col-md-4">
+    <img src="~/images/placeholder.jpg" class="card-img-top" alt="..." />
+    <div class="card-body">
+        <button id="LoadMore">Load More</button>
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿@model GamesResultViewModel
+﻿@model SearchViewModel
 
 
 @{
@@ -6,65 +6,55 @@
 }
 
 
-@if (Model.TotalPages <= 0)
+@*@if (Model.TotalPages <= 0)
+    {
+        <p>Games not found</p>
+    }
+    else
+    {
+        <div class="row" id="gameResults">
+            @if (Model.Title != null)
+            {
+                <partial name="_GameListPartial" model="@Model.Games" />
+            }
+            else
+            {
+                <p>Game not found! Try again</p>
+            }
+        </div>
+    }*@
+@if (Model.Title != null)
 {
-    <p>Games not found</p>
+    <div class="row" id="gameResults">
+        <partial name="_GameListPartial" model="@Model.Games" />
+
+
+    </div>
+
+
+    @*pagination*@
+    <vc:pagination action="Search"
+                   controller="Home"
+                   total-pages="@Model.TotalPages"
+                   current-page="@Model.CurrentPage"
+                   route-params="@(new Dictionary<string, string> { {"title", Model.Title } })">
+
+    </vc:pagination>
+    @*pagination end*@
 }
 else
 {
-    <div class="row" id="gameResults">
-        @if (Model.Title != null)
-        {
-            <partial name="_GameListPartial" model="@Model.Games.results" />
-        }
-        else
-        {
-            <p>Game not found! Try again</p>
-        }
-    </div>
+    <p>Game not found! Try again</p>
 }
-
-
-
-
-
-@*<div class="row">
-        @if (Model.Games.count <= 0)
-        {
-            <p>Games not found</p>
-        }
-
-        @foreach (var item in Model.Games.results)
-        {
-            <div class="card col-md-4">
-                <img src="@(item.background_image ?? "/images/placeholder.jpg")" class="card-img-top" alt="..." onerror="event.target.src = '/images/placeholder.jpg'">
-                <div class="card-body">
-                    <h5 class="card-title">@item.name</h5>
-                    <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@item.id" class="btn btn-primary">Details</a>
-                </div>
-            </div>
-        }
-    </div>*@
-
-@*pagination*@
-
-@*<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @for (int i = 1; i < Model.TotalPages; i++)
-        {
-
-            <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Search" asp-route-title="@Model.Title" asp-route-page="@i">@i</a></li>
-        }*@
-@*<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>*@
-@*</ul>
-    </nav>*@
 
 
 @section Scripts
-{
+    {
     <script>
-        initPagination(@Model.CurrentPage, @Model.TotalPages, '@Url.ActionLink("SearchResult", "Home", new { title = Model.Title } )');
+        $("#LoadMore").click(async function () {
+            $(this).parent().parent().remove();
+            await initPagination(@Model.CurrentPage, @Model.TotalPages, '@Url.ActionLink("SearchResult", "Home", new { title = Model.Title })');
+        });
     </script>
 }
+
