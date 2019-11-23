@@ -48,8 +48,54 @@
 </div>
 
 
+@*reviews list*@
+@if (Model.Reviews != null)
+{
+    @foreach (var item in Model.Reviews)
+    {
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>@item.Comment</p>
+                    <footer class="blockquote-footer">@item.UserName</footer>
+                </blockquote>
+            </div>
+        </div>
+    }
+
+}
+
+
+
+@*add review*@
+<form asp-controller="Home" asp-action="PostReview" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" name="GameId" value="@Model.Game.id" />
+    <div class="form-group">
+        <label asp-for="Review.UserEmail">Email address</label>
+        <input  asp-for="Review.UserEmail" class="form-control"  placeholder="name@example.com">
+        <span asp-validation-for="Review.UserEmail" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label for="UserName">Name</label>
+        <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Name">
+    </div>
+
+    <div class="form-group">
+        <label for="Comment">Example textarea</label>
+        <textarea class="form-control" id="Comment" name="Comment" rows="3"></textarea>
+    </div>
+    <button class="btn btn-primary">Submit</button>
+</form>
+
 
 @*@foreach (var item in ViewBag.AllStoresList)
+    {
+        <p>@item.name</p>
+    }*@
+
+@section Scripts
 {
-    <p>@item.name</p>
-}*@
+    <partial name="_ValidationScriptsPartial" />
+}

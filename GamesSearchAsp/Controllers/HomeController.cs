@@ -14,10 +14,12 @@ namespace GamesSearchAsp.Controllers
     public class HomeController : Controller
     {
         private readonly IGameSearchService gamesSearchService;
+        private readonly IReviewService reviewService;
 
-        public HomeController(IGameSearchService gamesSearchService)
+        public HomeController(IGameSearchService gamesSearchService, IReviewService reviewService)
         {
             this.gamesSearchService = gamesSearchService;
+            this.reviewService = reviewService;
         }
 
 
@@ -46,12 +48,15 @@ namespace GamesSearchAsp.Controllers
             var result = await gamesSearchService.SearchByIdAsync(id);
             var similarGames = await gamesSearchService.SearchSimilarGamesAsync(id);
             var storesList = await gamesSearchService.SearchStoresListAsync(id);
-
+            var gameReview = await reviewService.GetReviewsAsync(id);
+            Review review = new Review();
             var model = new GameDetailsViewModel
             {
                 Game = result,
                 SimilarGames = similarGames.results,
-                StoresList = storesList.results
+                StoresList = storesList.results,
+                Reviews = gameReview,
+                Review = review
             };
             //var allStoresList = await gamesSearchService.SearchAllStoresListAsync();
             //ViewBag.SimilarGames = similarGames.results;
@@ -60,6 +65,13 @@ namespace GamesSearchAsp.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> PostReview(Review review)
+        {
+            await reviewService.AddReviewAsycn(review);
+            return RedirectToAction("GameDetails", new { id = review.GameId });
+        }
 
         public IActionResult Index()
         {

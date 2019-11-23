@@ -1,0 +1,23 @@
+﻿@model Post
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Create post</h1>
+
+<form asp-action="Create" asp-controller="Posts" asp-area="Admin" method="post">
+    <div class="form-group">
+        <label asp-for="Title">Post Title</label>
+        <input class="form-control" placeholder="Enter post title" asp-for="Title">
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl">Post image</label>
+        <input class="form-control" asp-for="ImageUrl" placeholder="Add post image">
+    </div>
+    <div class="form-group">
+        <label asp-for="Text">Post text</label>
+        <textarea class="form-control" asp-for="Text" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

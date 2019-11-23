@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Admin Index";
+}
+
+<h1 class="text-center">Welcome, admin</h1>
+
+
+
+<a asp-action="Create" asp-area="Admin" asp-controller="Posts">Create post</a>
+
+
+<div class="row">
+    <div class="col-md-4">
+
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <img src="@item.ImageUrl" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Text</p>
+                    <p>Date: @item.Date</p>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+

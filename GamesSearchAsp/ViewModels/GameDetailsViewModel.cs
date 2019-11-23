@@ -11,5 +11,7 @@ namespace GamesSearchAsp.ViewModels
         public GameDetailsApiResponse Game { get; set; }
         public IEnumerable<Result> SimilarGames { get; set; }
         public IEnumerable<StoresResult> StoresList { get; set; }
+        public IEnumerable<Review> Reviews { get; set; }
+        public Review Review { get; set; }
     }
 }
