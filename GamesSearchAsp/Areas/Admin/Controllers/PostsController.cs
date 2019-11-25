@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GamesSearchAsp.Areas.Admin.Services;
+using GamesSearchAsp.Helpers;
 using GamesSearchAsp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesSearchAsp.Areas.Admin.Controllers
@@ -33,11 +35,32 @@ namespace GamesSearchAsp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Post post)
+        public async Task<IActionResult> Create(Post post, IFormFile uploadImg)
         {
-            post.Date = DateTime.Now;
-            await postService.AddPostAsync(post);
-            return RedirectToAction("Index");
+            if (uploadImg != null)
+            {
+                var path = await FileUploadHelper.UploadFile(uploadImg);
+                post.ImageUrl = path;
+                if (ModelState.IsValid)
+                {
+                    post.Date = DateTime.Now;
+                    await postService.AddPostAsync(post);
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    post.Date = DateTime.Now;
+                    await postService.AddPostAsync(post);
+                    return RedirectToAction("Index");
+                }
+            }
+          
+
+           
+            return View();
         }
     }
 }
