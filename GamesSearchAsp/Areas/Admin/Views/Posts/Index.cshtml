@@ -22,6 +22,7 @@
                 <h5 class="card-title">@item.Title</h5>
                 <p class="card-text">@item.Text</p>
                 <p>Date: @item.Date</p>
+                <a asp-action="Edit" asp-area="Admin" asp-controller="Posts" asp-route-id="@item.Id">Edit post</a>
             </div>
         </div>
     </div>

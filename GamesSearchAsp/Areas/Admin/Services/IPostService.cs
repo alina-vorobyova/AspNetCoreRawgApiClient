@@ -9,6 +9,9 @@ namespace GamesSearchAsp.Areas.Admin.Services
     public interface IPostService
     {
         public Task AddPostAsync(Post post);
+
         public Task<IEnumerable<Post>> GetAllPosts();
+
+        public Task UpdatePostAsync(Post post);
     }
 }

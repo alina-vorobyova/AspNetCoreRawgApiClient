@@ -18,7 +18,7 @@ namespace GamesSearchAsp.Areas.Admin.Services
 
         public async Task AddPostAsync(Post post)
         {
-            await context.AddAsync(post);
+            await context.Posts.AddAsync(post);
             await context.SaveChangesAsync();
         }
 
@@ -27,6 +27,10 @@ namespace GamesSearchAsp.Areas.Admin.Services
             return await context.Posts.ToListAsync();
         }
 
-      
+        public async Task UpdatePostAsync(Post post)
+        {
+             context.Posts.Update(post);
+             await context.SaveChangesAsync();
+        }
     }
 }

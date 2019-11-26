@@ -14,10 +14,12 @@ namespace GamesSearchAsp.Areas.Admin.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService postService;
+        private readonly GameAppDbContext context;
 
-        public PostsController(IPostService postService)
+        public PostsController(IPostService postService, GameAppDbContext context)
         {
             this.postService = postService;
+            this.context = context;
         }
 
         [HttpGet]
@@ -60,6 +62,29 @@ namespace GamesSearchAsp.Areas.Admin.Controllers
           
 
            
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var post = context.Posts.Find(id);
+            if (post != null)
+            {
+                return View(post);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Post post)
+        {
+            if (ModelState.IsValid)
+            {
+                post.Date = DateTime.Now;
+                await postService.UpdatePostAsync(post);
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
