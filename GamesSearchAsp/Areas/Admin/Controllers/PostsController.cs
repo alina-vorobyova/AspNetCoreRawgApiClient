@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesSearchAsp.Areas.Admin.Helpers;
 using GamesSearchAsp.Areas.Admin.Services;
 using GamesSearchAsp.Helpers;
 using GamesSearchAsp.Models;
@@ -37,31 +39,37 @@ namespace GamesSearchAsp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Post post, IFormFile uploadImg)
+        public async Task<IActionResult> Create(Post post, IFormFile uploadImg, string url)
         {
-            if (uploadImg != null)
+            try
             {
-                var path = await FileUploadHelper.UploadFile(uploadImg);
-                post.ImageUrl = path;
-                if (ModelState.IsValid)
+                if (uploadImg != null)
                 {
-                    post.Date = DateTime.Now;
-                    await postService.AddPostAsync(post);
-                    return RedirectToAction("Index");
+                    var path = await FileUploadHelper.UploadFile(uploadImg);
+                    post.ImageUrl = path;
+                    if (ModelState.IsValid)
+                    {
+                        post.Date = DateTime.Now;
+                        await postService.AddPostAsync(post);
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        post.Date = DateTime.Now;
+                        var path = await ImageLoader.DownloadFile(url);
+                        post.ImageUrl = path;
+                        await postService.AddPostAsync(post);
+                        return RedirectToAction("Index");
+                    }
                 }
             }
-            else
+            catch (Exception)
             {
-                if (ModelState.IsValid)
-                {
-                    post.Date = DateTime.Now;
-                    await postService.AddPostAsync(post);
-                    return RedirectToAction("Index");
-                }
+                TempData["LinkError"] = "Invalid link";
             }
-          
-
-           
             return View();
         }
 
@@ -77,13 +85,36 @@ namespace GamesSearchAsp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Post post)
+        public async Task<IActionResult> Edit(Post post, IFormFile uploadImg, string url)
         {
-            if (ModelState.IsValid)
+            try
             {
-                post.Date = DateTime.Now;
-                await postService.UpdatePostAsync(post);
-                return RedirectToAction("Index");
+                if (uploadImg != null)
+                {
+                    var path = await FileUploadHelper.UploadFile(uploadImg);
+                    post.ImageUrl = path;
+                    if (ModelState.IsValid)
+                    {
+                        post.Date = DateTime.Now;
+                        await postService.UpdatePostAsync(post);
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        post.Date = DateTime.Now;
+                        var path = await ImageLoader.DownloadFile(url);
+                        post.ImageUrl = path;
+                        await postService.UpdatePostAsync(post);
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                TempData["LinkError"] = "Invalid link";
             }
             return View();
         }
