@@ -13,5 +13,7 @@ namespace GamesSearchAsp.Areas.Admin.Services
         public Task<IEnumerable<Post>> GetAllPosts();
 
         public Task UpdatePostAsync(Post post);
+
+        public Task RemovePostAsync(int id);
     }
 }

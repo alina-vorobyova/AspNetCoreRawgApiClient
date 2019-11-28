@@ -15,7 +15,7 @@
     </div>
     <div class="form-group">
         <label asp-for="ImageUrl">Post Image</label>
-        <img src="ImageUrl" asp-for="ImageUrl" alt="Alternate Text" />
+        <img src="@Model.ImageUrl" asp-for="ImageUrl" alt="Alternate Text" width="200" />
     </div>
     <div class="form-group">
         <label asp-for="ImageUrl">Use a link to upload image</label>

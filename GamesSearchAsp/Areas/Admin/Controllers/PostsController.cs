@@ -118,5 +118,24 @@ namespace GamesSearchAsp.Areas.Admin.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var post = context.Posts.Find(id);
+            if (post != null)
+            {
+                return View(post);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            await postService.RemovePostAsync(id);
+            return RedirectToAction("Index");
+        }
     }
 }
